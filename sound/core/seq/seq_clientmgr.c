@@ -671,7 +671,7 @@ static int deliver_to_subscribers(struct snd_seq_client *client,
 	/* save original event record */
 	event_saved = *event;
 	grp = &src_port->c_src;
-	
+
 	/* lock list */
 	if (atomic)
 		read_lock(&grp->list_lock);

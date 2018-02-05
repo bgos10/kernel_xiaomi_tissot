@@ -61,12 +61,12 @@ struct snd_seq_prioq *snd_seq_prioq_new(void)
 	f = kzalloc(sizeof(*f), GFP_KERNEL);
 	if (!f)
 		return NULL;
-	
+
 	spin_lock_init(&f->lock);
 	f->head = NULL;
 	f->tail = NULL;
 	f->cells = 0;
-	
+
 	return f;
 }
 

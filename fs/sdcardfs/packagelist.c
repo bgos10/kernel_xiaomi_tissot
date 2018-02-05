@@ -9,7 +9,6 @@
  * the WrapFS which written by
  *
  * Copyright (c) 1998-2011 Erez Zadok
- * Copyright (c) 2009     Shrikar Archak
  * Copyright (c) 2003-2011 Stony Brook University
  * Copyright (c) 2003-2011 The Research Foundation of SUNY
  *
@@ -43,7 +42,7 @@ struct sb_list {
 };
 
 struct packagelist_data {
-	DECLARE_HASHTABLE(package_to_appid,8);
+	DECLARE_HASHTABLE(package_to_appid, 8);
 	struct mutex hashtable_lock;
 
 };
@@ -52,7 +51,8 @@ static struct packagelist_data *pkgl_data_all;
 
 static struct kmem_cache *hashtable_entry_cachep;
 
-static unsigned int str_hash(const char *key) {
+static unsigned int str_hash(const char *key)
+{
 	int i;
 	unsigned int h = strlen(key);
 	char *data = (char *)key;
@@ -86,7 +86,8 @@ appid_t get_appid(void *pkgl_id, const char *app_name)
 /* Kernel has already enforced everything we returned through
  * derive_permissions_locked(), so this is used to lock down access
  * even further, such as enforcing that apps hold sdcard_rw. */
-int check_caller_access_to_name(struct inode *parent_node, const char* name) {
+int check_caller_access_to_name(struct inode *parent_node, const char *name)
+{
 
 	/* Always block security-sensitive files at root */
 	if (parent_node && SDCARDFS_I(parent_node)->perm == PERM_ROOT) {
@@ -109,8 +110,9 @@ int check_caller_access_to_name(struct inode *parent_node, const char* name) {
 
 /* This function is used when file opening. The open flags must be
  * checked before calling check_caller_access_to_name() */
-int open_flags_to_access_mode(int open_flags) {
-	if((open_flags & O_ACCMODE) == O_RDONLY) {
+int open_flags_to_access_mode(int open_flags)
+{
+	if ((open_flags & O_ACCMODE) == O_RDONLY) {
 		return 0; /* R_OK */
 	} else if ((open_flags & O_ACCMODE) == O_WRONLY) {
 		return 1; /* W_OK */
@@ -142,7 +144,8 @@ static int insert_str_to_int_lock(struct packagelist_data *pkgl_dat, char *key,
 	return 0;
 }
 
-static void fixup_perms(struct super_block *sb) {
+static void fixup_perms(struct super_block *sb)
+{
 	if (sb && sb->s_magic == SDCARDFS_SUPER_MAGIC) {
 		mutex_lock(&sb->s_root->d_inode->i_mutex);
 		get_derive_permissions_recursive(sb->s_root);
@@ -168,7 +171,8 @@ static int insert_str_to_int(struct packagelist_data *pkgl_dat, char *key,
 	return ret;
 }
 
-static void remove_str_to_int_lock(struct hashtable_entry *h_entry) {
+static void remove_str_to_int_lock(struct hashtable_entry *h_entry)
+{
 	kfree(h_entry->key);
 	hash_del(&h_entry->hlist);
 	kmem_cache_free(hashtable_entry_cachep, h_entry);
@@ -209,13 +213,13 @@ static void remove_all_hashentrys(struct packagelist_data *pkgl_dat)
 	hash_init(pkgl_dat->package_to_appid);
 }
 
-static struct packagelist_data * packagelist_create(void)
+static struct packagelist_data *packagelist_create(void)
 {
 	struct packagelist_data *pkgl_dat;
 
 	pkgl_dat = kmalloc(sizeof(*pkgl_dat), GFP_KERNEL | __GFP_ZERO);
 	if (!pkgl_dat) {
-                printk(KERN_ERR "sdcardfs: Failed to create hash\n");
+				printk(KERN_ERR "sdcardfs: Failed to create hash\n");
 		return ERR_PTR(-ENOMEM);
 	}
 
@@ -428,7 +432,7 @@ int packagelist_init(void)
 
 	pkgl_data_all = packagelist_create();
 	configfs_sdcardfs_init();
-        return 0;
+		 return 0;
 }
 
 void packagelist_exit(void)

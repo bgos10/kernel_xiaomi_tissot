@@ -509,7 +509,7 @@ static void set_dflt_pwr_limit(struct iwl_trans *trans, struct pci_dev *pdev) {}
 static int iwl_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 {
 	const struct iwl_cfg *cfg = (struct iwl_cfg *)(ent->driver_data);
-	const struct iwl_cfg *cfg_7265d __maybe_unused = NULL;
+	const struct iwl_cfg *cfg_7265d __maybe_unused;
 	struct iwl_trans *iwl_trans;
 	struct iwl_trans_pcie *trans_pcie;
 	int ret;

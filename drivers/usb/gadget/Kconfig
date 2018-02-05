@@ -183,7 +183,7 @@ config USB_F_FS
 
 config USB_F_UAC1
 	tristate
- 
+
 config USB_F_UAC2
 	tristate
 

@@ -247,16 +247,16 @@ static struct dentry *__sdcardfs_lookup(struct dentry *dentry,
 		 * if true, the lower_inode must be replaced with
 		 * the inode of the graft path */
 
-		if(need_graft_path(dentry)) {
+		if (need_graft_path(dentry)) {
 
 			/* setup_obb_dentry()
- 			 * The lower_path will be stored to the dentry's orig_path
+			 * The lower_path will be stored to the dentry's orig_path
 			 * and the base obbpath will be copyed to the lower_path variable.
 			 * if an error returned, there's no change in the lower_path
 			 * 		returns: -ERRNO if error (0: no error) */
 			err = setup_obb_dentry(dentry, &lower_path);
 
-			if(err) {
+			if (err) {
 				/* if the sbi->obbpath is not available, we can optionally
 				 * setup the lower_path with its orig_path.
 				 * but, the current implementation just returns an error
@@ -335,13 +335,13 @@ struct dentry *sdcardfs_lookup(struct inode *dir, struct dentry *dentry,
 
 	parent = dget_parent(dentry);
 
-	if(!check_caller_access_to_name(parent->d_inode, dentry->d_name.name)) {
+	if (!check_caller_access_to_name(parent->d_inode, dentry->d_name.name)) {
 		ret = ERR_PTR(-EACCES);
 		printk(KERN_INFO "%s: need to check the caller's gid in packages.list\n"
-                         "	dentry: %s, task:%s\n",
+						 "	dentry: %s, task:%s\n",
 						 __func__, dentry->d_name.name, current->comm);
 		goto out_err;
-        }
+		 }
 
 	/* save current_cred and override it */
 	OVERRIDE_CRED_PTR(SDCARDFS_SB(dir->i_sb), saved_cred);
@@ -356,8 +356,7 @@ struct dentry *sdcardfs_lookup(struct inode *dir, struct dentry *dentry,
 	}
 
 	ret = __sdcardfs_lookup(dentry, flags, &lower_parent_path, SDCARDFS_I(dir)->userid);
-	if (IS_ERR(ret))
-	{
+	if (IS_ERR(ret)) {
 		goto out;
 	}
 	if (ret)

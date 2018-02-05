@@ -2803,7 +2803,7 @@ static int snd_pcm_oss_mmap(struct file *file, struct vm_area_struct *area)
 		runtime->access = SNDRV_PCM_ACCESS_MMAP_INTERLEAVED;
 	else
 		return -EIO;
-	
+
 	if (runtime->oss.params) {
 		/* use mutex_trylock() for params_lock for avoiding a deadlock
 		 * between mmap_sem and params_lock taken by

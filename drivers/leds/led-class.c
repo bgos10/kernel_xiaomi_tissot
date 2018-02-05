@@ -48,11 +48,9 @@ static ssize_t brightness_store(struct device *dev,
 		ret = -EBUSY;
 		goto unlock;
 	}
-
 	ret = kstrtoul(buf, 10, &state);
 	if (ret)
 		goto unlock;
-
 	led_cdev->usr_brightness_req = state;
 	__led_set_brightness(led_cdev, state);
 

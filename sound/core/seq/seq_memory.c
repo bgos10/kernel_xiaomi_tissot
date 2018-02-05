@@ -475,7 +475,7 @@ struct snd_seq_pool *snd_seq_pool_new(int poolsize)
 	atomic_set(&pool->counter, 0);
 	pool->closing = 0;
 	init_waitqueue_head(&pool->output_sleep);
-	
+
 	pool->size = poolsize;
 
 	/* init statistics */

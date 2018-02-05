@@ -59,9 +59,9 @@ Instead of playing such games, we just have an extra internal
 mutex, which is obtained by the garbage collection code and also
 by the normal file system code _after_ allocation of space.
 
-Ordering constraints: 
+Ordering constraints:
 
-	1. Never attempt to allocate space or lock alloc_sem with 
+	1. Never attempt to allocate space or lock alloc_sem with
 	   any f->sem held.
 	2. Never attempt to lock two file mutexes in one thread.
 	   No ordering rules have been made for doing so.

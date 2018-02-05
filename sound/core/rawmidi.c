@@ -1065,7 +1065,7 @@ int snd_rawmidi_transmit_empty(struct snd_rawmidi_substream *substream)
 	spin_lock_irqsave(&runtime->lock, flags);
 	result = runtime->avail >= runtime->buffer_size;
 	spin_unlock_irqrestore(&runtime->lock, flags);
-	return result;		
+	return result;
 }
 EXPORT_SYMBOL(snd_rawmidi_transmit_empty);
 
@@ -1203,7 +1203,7 @@ EXPORT_SYMBOL(snd_rawmidi_transmit_ack);
  * @substream: the rawmidi substream
  * @buffer: the buffer pointer
  * @count: the data size to transfer
- * 
+ *
  * Copies data from the buffer to the device and advances the pointer.
  *
  * Return: The copied size if successful, or a negative error code on failure.

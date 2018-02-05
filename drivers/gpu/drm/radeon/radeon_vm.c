@@ -1,6 +1,5 @@
 /*
  * Copyright 2008 Advanced Micro Devices, Inc.
- * Copyright 2008 Red Hat Inc.
  * Copyright 2009 Jerome Glisse.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a

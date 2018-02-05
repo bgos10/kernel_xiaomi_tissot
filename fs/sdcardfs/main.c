@@ -30,7 +30,7 @@ enum {
 	Opt_debug,
 	Opt_lower_fs,
 	Opt_mask,
-	Opt_multiuser, // May need?
+	Opt_multiuser,
 	Opt_userid,
 	Opt_reserved_mb,
 	Opt_err,
@@ -117,7 +117,7 @@ static int parse_options(struct super_block *sb, char *options, int silent,
 		/* unknown option */
 		default:
 			if (!silent) {
-				printk( KERN_ERR "Unrecognized mount option \"%s\" "
+				printk(KERN_ERR "Unrecognized mount option \"%s\" "
 						"or missing value", p);
 			}
 			return -EINVAL;
@@ -125,43 +125,15 @@ static int parse_options(struct super_block *sb, char *options, int silent,
 	}
 
 	if (*debug) {
-		printk( KERN_INFO "sdcardfs : options - debug:%d\n", *debug);
-		printk( KERN_INFO "sdcardfs : options - uid:%d\n",
+		printk(KERN_INFO "sdcardfs : options - debug:%d\n", *debug);
+		printk(KERN_INFO "sdcardfs : options - uid:%d\n",
 							opts->fs_low_uid);
-		printk( KERN_INFO "sdcardfs : options - gid:%d\n",
+		printk(KERN_INFO "sdcardfs : options - gid:%d\n",
 							opts->fs_low_gid);
 	}
 
 	return 0;
 }
-
-#if 0
-/*
- * our custom d_alloc_root work-alike
- *
- * we can't use d_alloc_root if we want to use our own interpose function
- * unchanged, so we simply call our own "fake" d_alloc_root
- */
-static struct dentry *sdcardfs_d_alloc_root(struct super_block *sb)
-{
-	struct dentry *ret = NULL;
-
-	if (sb) {
-		static const struct qstr name = {
-			.name = "/",
-			.len = 1
-		};
-
-		ret = d_alloc(NULL, &name);
-		if (ret) {
-			d_set_d_op(ret, &sdcardfs_ci_dops);
-			ret->d_sb = sb;
-			ret->d_parent = ret;
-		}
-	}
-	return ret;
-}
-#endif
 
 DEFINE_MUTEX(sdcardfs_super_list_lock);
 LIST_HEAD(sdcardfs_super_list);
@@ -267,12 +239,9 @@ static int sdcardfs_read_super(struct super_block *sb, const char *dev_name,
 	/* setup permission policy */
 	sb_info->obbpath_s = kzalloc(PATH_MAX, GFP_KERNEL);
 	mutex_lock(&sdcardfs_super_list_lock);
-	if(sb_info->options.multiuser) {
+	if (sb_info->options.multiuser) {
 		setup_derived_state(sb->s_root->d_inode, PERM_PRE_ROOT, sb_info->options.fs_user_id, AID_ROOT, false);
 		snprintf(sb_info->obbpath_s, PATH_MAX, "%s/obb", dev_name);
-		/*err =  prepare_dir(sb_info->obbpath_s,
-					sb_info->options.fs_low_uid,
-					sb_info->options.fs_low_gid, 00755);*/
 	} else {
 		setup_derived_state(sb->s_root->d_inode, PERM_ROOT, sb_info->options.fs_low_uid, AID_ROOT, false);
 		snprintf(sb_info->obbpath_s, PATH_MAX, "%s/Android/obb", dev_name);
@@ -307,8 +276,8 @@ out:
 
 /* A feature which supports mount_nodev() with options */
 static struct dentry *mount_nodev_with_options(struct file_system_type *fs_type,
-        int flags, const char *dev_name, void *data,
-        int (*fill_super)(struct super_block *, const char *, void *, int))
+		 int flags, const char *dev_name, void *data,
+		 int (*fill_super)(struct super_block *, const char *, void *, int))
 
 {
 	int error;
@@ -339,7 +308,8 @@ struct dentry *sdcardfs_mount(struct file_system_type *fs_type, int flags,
 					raw_data, sdcardfs_read_super);
 }
 
-void sdcardfs_kill_sb(struct super_block *sb) {
+void sdcardfs_kill_sb(struct super_block *sb)
+{
 	struct sdcardfs_sb_info *sbi;
 	if (sb->s_magic == SDCARDFS_SUPER_MAGIC) {
 		sbi = SDCARDFS_SB(sb);

@@ -36,7 +36,7 @@ static void sdcardfs_put_super(struct super_block *sb)
 	if (!spd)
 		return;
 
-	if(spd->obbpath_s) {
+	if (spd->obbpath_s) {
 		kfree(spd->obbpath_s);
 		path_put(&spd->obbpath);
 	}

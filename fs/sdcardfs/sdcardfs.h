@@ -127,9 +127,9 @@ struct sdcardfs_sb_info;
 struct sdcardfs_mount_options;
 
 /* Do not directly use this function. Use OVERRIDE_CRED() instead. */
-const struct cred * override_fsids(struct sdcardfs_sb_info* sbi);
+const struct cred  *override_fsids(struct sdcardfs_sb_info *sbi);
 /* Do not directly use this function, use REVERT_CRED() instead. */
-void revert_fsids(const struct cred * old_cred);
+void revert_fsids(const struct cred *old_cred);
 
 /* operations vectors defined in specific files */
 extern const struct file_operations sdcardfs_main_fops;
@@ -307,7 +307,7 @@ static inline void sdcardfs_put_reset_##pname(const struct dentry *dent) \
 { \
 	struct path pname; \
 	spin_lock(&SDCARDFS_D(dent)->lock); \
-	if(SDCARDFS_D(dent)->pname.dentry) { \
+	if (SDCARDFS_D(dent)->pname.dentry) { \
 		pathcpy(&pname, &SDCARDFS_D(dent)->pname); \
 		SDCARDFS_D(dent)->pname.dentry = NULL; \
 		SDCARDFS_D(dent)->pname.mnt = NULL; \
@@ -321,7 +321,8 @@ static inline void sdcardfs_put_reset_##pname(const struct dentry *dent) \
 SDCARDFS_DENT_FUNC(lower_path)
 SDCARDFS_DENT_FUNC(orig_path)
 
-static inline int get_gid(struct sdcardfs_inode_info *info) {
+static inline int get_gid(struct sdcardfs_inode_info *info)
+{
 	struct sdcardfs_sb_info *sb_info = SDCARDFS_SB(info->vfs_inode.i_sb);
 	if (sb_info->options.gid == AID_SDCARD_RW) {
 		/* As an optimization, certain trusted system components only run
@@ -334,7 +335,8 @@ static inline int get_gid(struct sdcardfs_inode_info *info) {
 		return multiuser_get_uid(info->userid, sb_info->options.gid);
 	}
 }
-static inline int get_mode(struct sdcardfs_inode_info *info) {
+static inline int get_mode(struct sdcardfs_inode_info *info)
+{
 	int owner_mode;
 	int filtered_mode;
 	struct sdcardfs_sb_info *sb_info = SDCARDFS_SB(info->vfs_inode.i_sb);
@@ -377,7 +379,7 @@ static inline void sdcardfs_get_real_lower(const struct dentry *dent,
 	/* in case of a local obb dentry
 	 * the orig_path should be returned
 	 */
-	if(has_graft_path(dent))
+	if (has_graft_path(dent))
 		sdcardfs_get_orig_path(dent, real_lower);
 	else
 		sdcardfs_get_lower_path(dent, real_lower);
@@ -386,7 +388,7 @@ static inline void sdcardfs_get_real_lower(const struct dentry *dent,
 static inline void sdcardfs_put_real_lower(const struct dentry *dent,
 						struct path *real_lower)
 {
-	if(has_graft_path(dent))
+	if (has_graft_path(dent))
 		sdcardfs_put_orig_path(dent, real_lower);
 	else
 		sdcardfs_put_lower_path(dent, real_lower);
@@ -397,7 +399,7 @@ extern struct list_head sdcardfs_super_list;
 
 /* for packagelist.c */
 extern appid_t get_appid(void *pkgl_id, const char *app_name);
-extern int check_caller_access_to_name(struct inode *parent_node, const char* name);
+extern int check_caller_access_to_name(struct inode *parent_node, const char *name);
 extern int open_flags_to_access_mode(int open_flags);
 extern int packagelist_init(void);
 extern void packagelist_exit(void);

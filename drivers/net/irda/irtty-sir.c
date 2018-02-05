@@ -420,9 +420,9 @@ static int irtty_ioctl(struct tty_struct *tty, struct file *file, unsigned int c
  *
  *    This function is called by the TTY module when the IrDA line
  *    discipline is called for.  Because we are sure the tty line exists,
- *    we only have to link it to a free IrDA channel.  
+ *    we only have to link it to a free IrDA channel.
  */
-static int irtty_open(struct tty_struct *tty) 
+static int irtty_open(struct tty_struct *tty)
 {
 	struct sir_dev *dev;
 	struct sirtty_cb *priv;
@@ -436,7 +436,7 @@ static int irtty_open(struct tty_struct *tty)
 		tty->ops->stop(tty);
 
 	tty_driver_flush_buffer(tty);
-	
+
 	/* apply mtt override */
 	sir_tty_drv.qos_mtt_bits = qos_mtt_bits;
 
